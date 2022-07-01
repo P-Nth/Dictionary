@@ -20,7 +20,6 @@ class SearchWord {
         num++;
         this.submitWord(wrapper, searchInput, infoText);
       }
-      console.log(num);
       if (num > 1) {
         let x = document.querySelector(".synonym .list");
         x.innerHTML = "";
