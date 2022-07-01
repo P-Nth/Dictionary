@@ -14,12 +14,17 @@ class SearchWord {
     removeIcon.addEventListener("click", () => {
       this.clearInput(searchInput, wrapper, infoText);
     });
-
+    let num = 0;
     searchInput.addEventListener("keyup", ({ key }) => {
-      let num = 0;
       if (key === "Enter") {
-        this.submitWord(wrapper, searchInput, infoText);
         num++;
+        this.submitWord(wrapper, searchInput, infoText);
+      }
+      console.log(num);
+      if (num > 1) {
+        let x = document.querySelector(".synonym .list");
+        x.innerHTML = "";
+        num = 1;
       }
     });
   }
@@ -51,7 +56,7 @@ class SearchWord {
       })
       .catch((error) => {
         console.log("Error:", error);
-        infoText.innerHTML = `Word "${searchInput.value}" is not found! Please search another word!`;
+        infoText.innerHTML = `The Word "${searchInput.value}" is not found! Please search another word!`;
         this.closeWrapper(wrapper, searchInput);
       });
   }
