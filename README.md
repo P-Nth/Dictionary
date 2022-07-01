@@ -1,2 +1,3 @@
 # Dictionary
-A dictionary made in javascript
+
+A dictionary webapp made in javascript
