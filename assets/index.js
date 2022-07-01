@@ -21,10 +21,6 @@ class SearchWord {
         this.submitWord(wrapper, searchInput, infoText);
         num++;
       }
-      console.log(num);
-      if (num > 0) {
-        this.submitWord(wrapper, searchInput, infoText);
-      }
     });
   }
 
@@ -44,10 +40,10 @@ class SearchWord {
     infoText.innerHTML = `Searching the meaning of <span>"${searchInput.value}"</span>`;
     let url = `https://api.dictionaryapi.dev/api/v2/entries/en/${searchInput.value}`;
     fetch(url)
-      .then((res) => res.json())
-      .then((r) => {
+      .then((r) => r.json())
+      .then((res) => {
         let searchedWord = searchInput.value;
-        let answer = { r, searchedWord };
+        let answer = { res, searchedWord };
         this.returned = answer;
         searchInput.value = `${searchedWord}`;
         this.postData(wrapper);
@@ -55,7 +51,7 @@ class SearchWord {
       })
       .catch((error) => {
         console.log("Error:", error);
-        infoText.innerHTML = `Word ${searchInput.value} is not found! Please search another word!`;
+        infoText.innerHTML = `Word "${searchInput.value}" is not found! Please search another word!`;
         this.closeWrapper(wrapper, searchInput);
       });
   }
@@ -70,33 +66,28 @@ class SearchWord {
     function random(num) {
       return Math.floor(Math.random() * num);
     }
-    console.log(this.returned);
-    let a = random(this.returned.r[0].meanings[0].definitions.length);
-    let b = this.returned.r[0].meanings[0].synonyms.length;
-    let c = this.returned.r[0].meanings[0].definitions[a].example;
-    let d = this.returned.r[0].meanings[0].synonyms;
-    let e = random(this.returned.r[0].meanings[0].synonyms.length);
-    let synonym = "";
+    let a = random(this.returned.res[0].meanings[0].definitions.length);
+    let b = this.returned.res[0].meanings[0].synonyms.length;
+    let c = this.returned.res[0].meanings[0].definitions[a].example;
+    let d = this.returned.res[0].meanings[0].synonyms;
+    let e = random(this.returned.res[0].meanings[0].synonyms.length);
     if (a !== undefined) {
-      phonetic.innerHTML = this.returned.r[0].word;
-      speech.innerHTML = `${this.returned.r[0].meanings[0].partOfSpeech} ${this.returned.r[0].phonetic}`;
+      phonetic.innerHTML = this.returned.res[0].word;
+      speech.innerHTML = `${this.returned.res[0].meanings[0].partOfSpeech} ${this.returned.res[0].phonetic}`;
       meaning.innerHTML =
-        this.returned.r[0].meanings[0].definitions[a].definition;
+        this.returned.res[0].meanings[0].definitions[a].definition;
       if (c !== undefined) {
         example.innerHTML = c;
       } else {
         example.innerHTML = "No example available!";
       }
+      console.log(e);
       if (d[e] !== undefined) {
         d.slice().forEach((element) => {
-          for (let i = 0; i < b; i++) {
-            synonym = `<span>${element}</span>`;
-          }
-          synonyms.innerHTML += synonym;
+          synonyms.innerHTML += `<span>${element}</span>`;
         });
       } else {
-        synonym = `<span>This word has no synonym</span>`;
-        synonyms.innerHTML += synonym;
+        synonyms.innerHTML = `<span>This word has no synonym</span>`;
       }
     }
   }
