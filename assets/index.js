@@ -10,7 +10,7 @@ class SearchWord {
     this.returned = [];
   }
   searchWord() {
-    const { wrapper, searchInput, removeIcon, infoText } = this.args;
+    const { wrapper, searchInput, removeIcon, infoText, audio } = this.args;
     removeIcon.addEventListener("click", () => {
       this.clearInput(searchInput, wrapper, infoText);
     });
@@ -18,7 +18,7 @@ class SearchWord {
     searchInput.addEventListener("keyup", ({ key }) => {
       if (key === "Enter") {
         num++;
-        this.submitWord(wrapper, searchInput, infoText);
+        this.submitWord(wrapper, searchInput, infoText, audio);
       }
       if (num > 1) {
         let x = document.querySelector(".synonym .list");
@@ -63,15 +63,18 @@ class SearchWord {
   postData(wrapper) {
     let phonetic = wrapper.querySelector(".word p");
     let speech = wrapper.querySelector(".word span");
-    let volume = document.querySelector(".word i");
+    let volume = wrapper.querySelector(".word i");
     let meaning = wrapper.querySelector(".meaning span");
     let example = wrapper.querySelector(".example span");
     let synonyms = wrapper.querySelector(".synonym .list");
     function random(num) {
       return Math.floor(Math.random() * num);
     }
+    let audioChoosen = random(this.returned.res[0].phonetics.length);
+    volume.addEventListener("click", (e) => {
+      new Audio(this.returned.res[0].phonetics[audioChoosen].audio).play();
+    });
     let a = random(this.returned.res[0].meanings[0].definitions.length);
-    let b = this.returned.res[0].meanings[0].synonyms.length;
     let c = this.returned.res[0].meanings[0].definitions[a].example;
     let d = this.returned.res[0].meanings[0].synonyms;
     let e = random(this.returned.res[0].meanings[0].synonyms.length);
