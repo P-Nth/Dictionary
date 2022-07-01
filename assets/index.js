@@ -81,7 +81,6 @@ class SearchWord {
       } else {
         example.innerHTML = "No example available!";
       }
-      console.log(e);
       if (d[e] !== undefined) {
         d.slice().forEach((element) => {
           synonyms.innerHTML += `<span>${element}</span>`;
